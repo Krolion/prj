@@ -1,6 +1,7 @@
 package com.deutsche.demojpa.dao;
 
 import com.deutsche.demojpa.model.Person;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -19,7 +20,8 @@ public class PersonDao {
 
     public void savePerson(Person person) {
         entityManager.persist(person);
-        entityManager.flush();
+//        entityManager.flush();
+//        entityManager.remove();
     }
 
 

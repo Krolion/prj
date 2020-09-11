@@ -1,8 +1,8 @@
 package com.deutsche.demojpa.services;
 
-import com.deutsche.demojpa.dao.PersonDao;
 import com.deutsche.demojpa.model.Address;
 import com.deutsche.demojpa.model.Person;
+import com.deutsche.demojpa.repo.PersonRepo;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,11 @@ import java.util.stream.Stream;
 @Service
 public class PersonService {
 
+//    @Autowired
+//    private PersonDao personDao;
+
     @Autowired
-    private PersonDao personDao;
+    private PersonRepo personRepo;
 
     @Autowired
     private Faker faker;
@@ -27,7 +30,7 @@ public class PersonService {
 
     @Transactional
     public void makePeopleYounger() {
-        List<Person> people = personDao.findAll();
+        List<Person> people = personRepo.findAll();
         for (Person person : people) {
             person.setAge(person.getAge()-20);
         }
@@ -42,7 +45,7 @@ public class PersonService {
                 .collect(Collectors.toList());
 
         for (Person person : people) {
-            personDao.savePerson(person);
+            personRepo.save(person);
         }
 
         for (Person person : people) {
@@ -59,7 +62,7 @@ public class PersonService {
 
     @Transactional
     public void printAllYoungPersons() {
-        for (Person person : personDao.findByAgeGreaterThan(18)) {
+        for (Person person : personRepo.findByAgeGreaterThan(18)) {
             System.out.println(person.toString());
         }
     }

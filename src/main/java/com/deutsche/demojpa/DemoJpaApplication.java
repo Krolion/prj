@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+//@EnableJpaRepositories(basePackages = "com.deutsche.demojpa.repo")
 public class DemoJpaApplication {
 
 
@@ -25,6 +27,7 @@ public class DemoJpaApplication {
         PersonService personService = context.getBean(PersonService.class);
         personService.save10Person();
         personService.printAllYoungPersons();
+        System.out.println();
     }
 
 }
