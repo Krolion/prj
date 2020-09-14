@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@With
 public class Person {
     @Id
     @GeneratedValue

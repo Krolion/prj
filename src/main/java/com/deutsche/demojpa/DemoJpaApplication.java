@@ -24,10 +24,10 @@ public class DemoJpaApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(DemoJpaApplication.class, args);
-        PersonService personService = context.getBean(PersonService.class);
-        personService.save10Person();
-        personService.printAllYoungPersons();
-        System.out.println();
+//        PersonService personService = context.getBean(PersonService.class);
+//        personService.save10Person();
+//        personService.printAllYoungPersons();
+//        System.out.println();
     }
 
 }

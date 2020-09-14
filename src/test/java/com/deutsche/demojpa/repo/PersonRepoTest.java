@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Evgeny Borisov
@@ -31,7 +32,11 @@ class PersonRepoTest {
     @BeforeEach
     @Transactional
     @Rollback(false)
-    public void setUp() {
+    public void setUp(String str) {
+
+
+        Optional.ofNullable(str).map(String::length);
+
         personRepo.save(Person.builder().name("Vasya").address(Address.builder().city("Vasya").build()).build());
     }
 
