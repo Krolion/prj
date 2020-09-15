@@ -1,15 +1,12 @@
-package service;
+package model.telegram;
 
-import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.List;
 
-
-public class MyBot extends TelegramLongPollingBot {
+public class TestBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         System.out.println(update.getMessage().getFrom().getFirstName()
