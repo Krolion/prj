@@ -32,6 +32,6 @@ public class QASlaveOBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "token_1";
+        return "1389370639:AAFpHBYG3eBgyrtFFQNh5wyhi-DIjBK5HFY";
     }
 }

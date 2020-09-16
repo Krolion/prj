@@ -1,22 +1,22 @@
-package com.billy.model.telegram;
+package service;
 
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class QASlavePBot extends TelegramLongPollingBot {
-
-    public int a = 0;
-
+@Component
+public class MyBot1 extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         System.out.println(update.getMessage().getFrom().getFirstName()
                 + " " + update.getMessage().getText());
 
         SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
-        sendMessage.setText("Hello " + update.getMessage().getFrom().getFirstName() + " " + a);
-        a += 1;
+        sendMessage.setText("Hello " + update.getMessage().getFrom().getFirstName());
+
+
 
         try {
             execute(sendMessage);
@@ -25,13 +25,17 @@ public class QASlavePBot extends TelegramLongPollingBot {
         }
     }
 
+    public void SendRequest(String question) {
+
+    }
+
     @Override
     public String getBotUsername() {
-        return "test25674Bot";
+        return "test25673Bot";
     }
 
     @Override
     public String getBotToken() {
-        return "1386895726:AAHfFueXGvqAwouqs2XbN5I6mlUHKV8ZzG0";
+        return "your_token";
     }
 }
