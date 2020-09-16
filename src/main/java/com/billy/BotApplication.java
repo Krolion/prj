@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 
-@Service
+@Component
 public class BotApplication {
 
     @Autowired

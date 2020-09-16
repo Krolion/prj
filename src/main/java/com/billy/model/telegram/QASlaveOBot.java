@@ -14,7 +14,8 @@ import javax.inject.Singleton;
 public class QASlaveOBot extends TelegramLongPollingBot {
 
     public int a = 0;
-    public SendMessage lastMessage = null;
+    public SendMessage lastMessage;
+    public Update lastUpdate;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -24,6 +25,7 @@ public class QASlaveOBot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
         sendMessage.setText("Hello " + update.getMessage().getFrom().getFirstName() + " " + a);
         lastMessage = sendMessage;
+        lastUpdate = update;
         a += 1;
 
         try {
