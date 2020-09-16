@@ -2,28 +2,25 @@ package com.billy;
 
 import com.billy.model.telegram.QASlaveOBot;
 import com.billy.model.telegram.QASlavePBot;
-import com.billy.parallel.BotThread;
+import com.billy.parallel.QASlaveOBotThread;
+import com.billy.parallel.QASlavePBotThread;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+@Service
 public class BotApplication {
 
-    @SneakyThrows
-    public static void main(String[] args) {
-        ApiContextInitializer.init();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        QASlaveOBot qaSlaveOBot = new QASlaveOBot();
-        QASlavePBot qaSlavePBot = new QASlavePBot();
+    @Autowired
+    public QASlaveOBotThread qaSlaveOBotThread;
+    @Autowired
+    public QASlavePBotThread qaSlavePBotThread;
 
-        BotThread bot1 = new BotThread(telegramBotsApi, qaSlaveOBot);
-        BotThread bot2 = new BotThread(telegramBotsApi, qaSlavePBot);
-
-        while (bot1.isAlive() && bot2.isAlive())
-        {
-            System.out.println("I'm still working...");
-            Thread.sleep(500);
-        }
+    public BotApplication() {
+        System.out.println("Я родился!");
     }
 }

@@ -1,17 +1,25 @@
 package com.billy.parallel;
 
+import com.billy.model.telegram.QASlaveOBot;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
-public class BotThread extends Thread {
-    private TelegramBotsApi telegramBotsApi;
-    private TelegramLongPollingBot bot;
+import javax.inject.Singleton;
+
+
+@Component
+@Singleton
+public class QASlaveOBotThread extends Thread {
+    public TelegramBotsApi telegramBotsApi;
+    public QASlaveOBot bot;
 
     private static int counter = 0;
-    private int num;
+    public int num;
 
-    public BotThread(TelegramBotsApi telegramBotsApi, TelegramLongPollingBot bot) {
+    public QASlaveOBotThread(TelegramBotsApi telegramBotsApi, QASlaveOBot bot) {
         super("Поток" + ++counter);
 
         num = counter;
