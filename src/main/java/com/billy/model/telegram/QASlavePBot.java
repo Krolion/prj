@@ -1,6 +1,12 @@
 package com.billy.model.telegram;
 
+import com.billy.data.Chat;
+import com.billy.model.telegram.parsers.UserMessageParser;
+import lombok.SneakyThrows;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -8,28 +14,49 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.inject.Singleton;
 
-
 @Component
 @Singleton
 public class QASlavePBot extends TelegramLongPollingBot {
 
+    private final String server = "localhost:8087/api/central/"; //TODO Удалить это и написать нормально
     public SendMessage lastMessage = null;
     public int a = 0;
+    public Object lastUpdate;
+    private final UserMessageParser questionCommandParser = new UserMessageParser("question");
 
     @Override
+    @SneakyThrows
     public void onUpdateReceived(Update update) {
-        System.out.println(update.getMessage().getFrom().getFirstName()
-                + " " + update.getMessage().getText());
-
-        SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
-        sendMessage.setText("Hello " + update.getMessage().getFrom().getFirstName() + " " + a);
-        lastMessage = sendMessage;
-        a += 1;
-
+        lastUpdate = update;
+        boolean flag = false;
         try {
+            if (update.getMessage().getNewChatMembers().stream().anyMatch(n -> n.getId() == this.getBotId())) {
+                flag = true;
+            }
+            if (!flag) { flag = update.getMessage().getGroupchatCreated(); }
+        } catch (Exception ignored) {}
+        if (flag) {
+            // Логика если бота добавили в группу или создали группу с ним
+            SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
+            sendMessage.setText("Я не добавился, сорян.");
+            lastMessage = sendMessage;
+            try {
+                execute(sendMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        try {
+            flag = questionCommandParser.parseMessage(update.getMessage().getText()).isCommand;
+        } catch (Exception ignored) {}
+        if (flag) {
+            // Логика если есть команда /question в начале
+            SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
+            sendMessage.setText("Спасибо за вопрос! Извините, но пока я не умею отвечать, но я надеюсь," +
+                    "что скоро меня научат");
+            lastMessage = sendMessage;
             execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
         }
     }
 
@@ -45,6 +72,10 @@ public class QASlavePBot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return "test25674Bot";
+    }
+
+    public int getBotId() {
+        return 1386895726;
     }
 
     @Override

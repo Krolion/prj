@@ -1,6 +1,8 @@
 package com.billy.controllers;
 
-import com.billy.BotApplication;
+import com.billy.model.telegram.QAMasterBot;
+import com.billy.model.telegram.QASlaveOBot;
+import com.billy.model.telegram.QASlavePBot;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -17,11 +19,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 @RequestMapping("/api/bot/")
 public class BotController {
 
-    public BotApplication botApplication;
-
-    public BotController(BotApplication botApplication) {
-        this.botApplication = botApplication;
-    }
+    @Autowired
+    public QASlaveOBot qaSlaveOBot;
+    @Autowired
+    public QASlavePBot qaSlavePBot;
+    @Autowired
+    public QAMasterBot qaMasterBot;
 
     @GetMapping("hello")
     public String hello(){
@@ -30,21 +33,27 @@ public class BotController {
 
     @GetMapping("send")
     public String send_message() {
-        botApplication.qaSlaveOBotThread.bot.sendMessage();
-        botApplication.qaSlavePBotThread.bot.sendMessage();
+        qaSlaveOBot.sendMessage();
+        qaSlavePBot.sendMessage();
         return "i'm working on it";
     }
 
-    @GetMapping("last_update")
-    public String last_update() throws JsonProcessingException {
+    @GetMapping("last_update_o")
+    public String last_update_o() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(botApplication.qaSlaveOBotThread.bot.lastUpdate);
+        return objectMapper.writeValueAsString(qaSlaveOBot.lastUpdate);
+    }
+
+    @GetMapping("last_update_p")
+    public String last_update_p() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(qaSlavePBot.lastUpdate);
     }
 
     @GetMapping("last_message")
     public String last_message() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(botApplication.qaSlaveOBotThread.bot.lastMessage);
+        return objectMapper.writeValueAsString(qaSlaveOBot.lastMessage);
     }
 }
 

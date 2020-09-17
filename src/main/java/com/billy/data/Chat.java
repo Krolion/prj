@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 @Builder
 public class Chat {
-    public int chat_id;
+    public long chat_id;
 }
